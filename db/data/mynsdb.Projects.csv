@@ -1,0 +1,4 @@
+project_id,ID,Name,Client,StartDate,EndDate,Budget,ClientType,createdAt,createdBy,modifiedAt,modifiedBy
+P001,f2bcdc0c-65b2-452e-81c5-a285328b80b1,NextGen App,ACME Corp,2024-01-01,2024-12-31,100000,E
+P002,f2bcdc0c-65b2-462e-81c5-a285328b80b1,Infra Upgrade,Globex Inc,2024-03-01,2024-09-30,75000,I
+P003,f2bcdc0c-65b2-472e-81c5-a285328b80b1,AI Chatbot,Initech,2024-02-15,2024-08-15,50000,M

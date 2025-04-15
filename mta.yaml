@@ -1,0 +1,160 @@
+_schema-version: 3.3.0
+ID: incidentService
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: incidentService-srv
+  type: nodejs
+  path: gen/srv
+  properties:
+    OPTIMIZE_MEMORY: true
+    COOKIE_BACKWARD_COMPATIBILITY : true
+  requires:
+  - name: incidentService-auth
+  - name: incidentService-dest
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    disk-quota: 1024M
+    instances: 1
+    memory: 512M
+  build-parameters:
+    builder: npm
+
+- name: incidentService-approuter
+  type: approuter.nodejs
+  path: approuter
+  properties:
+        COOKIE_BACKWARD_COMPATIBILITY : true
+  requires:
+  - name: incidentService-repo-runtime
+  - name: srv-api
+    group: destinations
+    properties:
+      forwardAuthToken: true
+      name: srv-api
+      url: ~{srv-url}
+  - name: incidentService-auth
+  - name: incidentService-dest
+    group: destinations
+    properties:
+      forwardAuthToken: false
+      name: ui5
+      url: https://ui5.sap.com
+  parameters:
+    disk-quota: 256M
+    keep-existing-routes: true
+    memory: 256M    
+- name: incidentService-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: incidentService-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - comaidennpuiincidentsapp.zip
+      name: comaidennpuiincidentsapp
+      target-path: resources/
+- name: incidentService-dest-content
+  type: com.sap.application.content
+  requires:
+  - name: incidentService-dest
+    parameters:
+      content-target: true
+  - name: incidentService-repo-host
+    parameters:
+      service-key:
+        name: incidentService-repo-host-key
+  - name: incidentService-auth
+    parameters:
+      name: incidentService-auth-key
+      service-key: null
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: incidentService_repo_host
+          ServiceInstanceName: incidentService-repo-host
+          ServiceKeyName: incidentService-repo-host-key
+          sap.cloud.service: incidentService
+        - Authentication: OAuth2UserTokenExchange
+          Name: incidentService_auth
+          ServiceInstanceName: incidentService-auth
+          ServiceKeyName: incidentService-auth-key
+          sap.cloud.service: incidentService
+        existing_destinations_policy: update
+  build-parameters:
+    no-source: true
+- name: comaidennpuiincidentsapp
+  type: html5
+  path: app/ui-incidentsapp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: incidentService-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: incidentService-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: incidentService-repo-runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service:  html5-apps-repo
+    service-plan :  app-runtime    
+- name: incidentService-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
+- name: incidentService-dest
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: incidentService-service
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-plan: lite
+  requires:
+  - name: srv-api
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production
+

@@ -1,0 +1,4 @@
+ID,incidentdetails_id,ReportedBy,ReportedOn,Status,ResolutionNotes,LastUpdatedBy,createdAt,createdBy,modifiedAt,modifiedBy
+v12bcdc0c-65b2-442e-81c5-a285328b80b2,ID001,Alice Johnson,2024-03-10T10:05:00,Open,Investigating deployment logs,Alice
+ab2bcdc0c-65b2-442e-81c5-a285328b80b2,ID002,Clara Wang,2024-03-12T09:10:00,InProgress,UI team notified for fixes,Clara
+a1bbcdc0c-65b2-442e-81c5-a285328b80b2,ID003,Alice Johnson,2024-04-01T08:35:00,Resolved,Connection pool adjusted,Alice

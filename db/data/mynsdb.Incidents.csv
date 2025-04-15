@@ -1,0 +1,4 @@
+ID,incident_id,Projects_ID,Employees_ID,Description,Priority,CreatedOn,UpdatedOn,createdAt,createdBy,modifiedAt,modifiedBy
+a1bcdc0c-65b2-442e-81c5-a285328b80b2,I001,P001,E001,Deployment failure in UAT,High,2024-03-10T10:00:00,2024-03-10T12:00:00
+a2bcdc0c-65b2-442e-81c5-a285328b80b2,I002,P001,E002,UI bugs reported by QA,Medium,2024-03-12T09:00:00,2024-03-12T11:00:00
+a3bcdc0c-65b2-442e-81c5-a285328b80b2,I003,P002,E003,Database connection timeout,Critical,2024-04-01T08:30:00,2024-04-01T10:15:00

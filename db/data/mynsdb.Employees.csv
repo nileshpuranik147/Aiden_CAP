@@ -1,0 +1,10 @@
+ID,emp_ID,Projects_ID,FirstName,LastName,Email,Phone,Role,createdAt,createdBy,modifiedAt,modifiedBy
+f2bcdc0c-65b2-442e-81c5-a285328b80b1,E001,P001,Alice,Johnson,alice@company.com,+1234567890,Developer
+f2bcdc0c-65b2-442e-81c5-a285328b80b2,E002,P001,Bob,Smith,bob@company.com,+1987654321,Project Manager
+f2bcdc0c-65b2-442e-81c5-a285328b80b3,E003,P002,Clara,Wang,clara@company.com,+1122334455,QA Engineer
+f2bcdc0c-65b2-442e-81c5-a285328b80b4,E004,P002,Daniel,Lee,daniel.lee@company.com,+12125551234,Backend Developer,,,,
+f2bcdc0c-65b2-442e-81c5-a285328b80b5,E005,P003,Eva,Martinez,eva.martinez@company.com,+14165557890,UX Designer,,,,
+f2bcdc0c-65b2-442e-81c5-a285328b80b6,E006,P003,Frank,Nguyen,frank.nguyen@company.com,+13105554321,DevOps Engineer,,,,
+f2bcdc0c-65b2-442e-81c5-a285328b80b7,E007,P001,Gina,Kim,gina.kim@company.com,+16175550999,Scrum Master,,,,
+f2bcdc0c-65b2-442e-81c5-a285328b80b8,E008,P002,Hassan,Khan,hassan.khan@company.com,+17035550123,Frontend Developer,,,,
+f2bcdc0c-65b2-442e-81c5-a285328b80b9,E009,P003,Isabel,Chen,isabel.chen@company.com,+18005550678,Data Scientist,,,,

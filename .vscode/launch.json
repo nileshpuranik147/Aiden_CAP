@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "command": "npm run ts_hybrid",
+      "name": "Hybrid Testing",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run sp_hybrid",
+      "name": "Hybrid specific_Testing",
+      "request": "launch",
+      "type": "node-terminal"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "xsappname": "incidentservice",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.USER",
+      "description": "Scope for Application User"
+    },
+    { 
+      "name": "uaa.user", 
+      "description": "UAA" 
+    },
+    { 
+      "name" : "$XSAPPNAME.Display", 
+      "description" : "display" }, 
+     { 
+      "name" : "$XSAPPNAME.Edit", 
+      "description" : "edit" 
+    },
+    { 
+      "name" : "$XSAPPNAME.DEMO_USER_NL", 
+      "description" : "Demo User NL" 
+    },
+    { 
+      "name" : "$XSAPPNAME.DEMO_USER_EU", 
+      "description" : "Demo User EU" 
+    }          
+  ],
+  "attributes": [
+    {
+      "name": "country",
+      "description": "Country",
+      "valueType": "string", 
+      "valueRequired": false
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "RLT_DEMO_USER_NL",
+      "description": "Role for Application User",
+      "scope-references": ["$XSAPPNAME.USER","uaa.user" , "$XSAPPNAME.DEMO_USER_NL"],
+      "attribute-references": [{ "name": "country", "default-values" : ["NL"] }]
+    },
+    {
+      "name": "RLT_DEMO_USER_EU",
+      "description": "Role for Application User",
+      "scope-references": ["$XSAPPNAME.USER","uaa.user","$XSAPPNAME.DEMO_USER_EU"],
+      "attribute-references": [{ "name": "country", "default-values" : ["NL","DE"] }]
+    },    
+    {
+      "name": "Token_Exchange",
+      "description": "UAA",
+      "scope-references": ["uaa.user"]
+    }    
+  ],
+  "role-collections": [
+    {
+      "name": "RC_DEMO_USER_NL",
+      "description": "Role collection for Application User for NL",
+      "role-template-references": ["$XSAPPNAME.RLT_DEMO_USER_NL"]
+    },
+    {
+      "name": "RC_DEMO_USER_EU",
+      "description": "Role collection for Application User for EU",
+      "role-template-references": ["$XSAPPNAME.RLT_DEMO_USER_EU"]
+    }    
+  ],
+  "authorities-inheritance": false,
+"oauth2-configuration": {
+    "redirect-uris": [
+      "https://**.hana.ondemand.com/**",
+      "https://**.applicationstudio.cloud.sap/**",
+      "http://localhost:*/**",
+      "https://*.authentication.eu20.hana.ondemand.com/**"
+    ]
+  }    
+}

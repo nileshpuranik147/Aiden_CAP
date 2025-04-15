@@ -1,0 +1,144 @@
+{
+  "name": "incidentService",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^8.9.1",
+    "@sap/xssec": "^4",
+    "express": "^4",
+    "fs": "^0.0.1-security",
+    "moment": "^2.30.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@cap-js/cds-types": "^0.9.0",
+    "@cap-js/sqlite": "^1.10.0",
+    "@sap/cds-dk": "^8",
+    "mbt": "^1.2.29",
+    "rimraf": "^5.0.5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "ts_hybrid": "cds watch --profile hybrid",
+    "sp_hybrid" : "cds watch --profile viewer",    
+    "dev_testing": "cds watch --profile dev",
+    "qas_testing": "cds watch --profile qas",
+    "watch-ui-incidentsapp": "cds watch --open ui-incidentsapp/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy incidentService --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+  },
+  "cds": {
+    "build": {
+      "target": "gen",
+      "tasks": [
+        {
+          "for": "hana",
+          "src": "db",
+          "options": {
+            "model": [
+              "db",
+              "srv",
+              "app"
+            ]
+          }
+        },
+        {
+          "for": "nodejs",
+          "src": "srv",
+          "options": {
+            "model": [
+              "db",
+              "srv",
+              "app"
+            ]
+          }
+        }
+      ]
+    },
+    "requires": {
+      "auth": {
+        "passport":{
+          "strategy":"xsuaa"
+        }
+      },
+      "html5-runtime": true,
+      "db": {
+        "kind": "sqlite",
+        "model": [
+          "db",
+          "srv"
+        ],
+        "credentials": {
+          "url": ":memory:"
+        },
+        "schema_evolution": "auto"
+      },
+      "[viewer]": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "admin_NL": {
+              "password": "admin",
+              "roles": [
+                "DEMO_USER_NL"
+              ],
+              "attr": {
+                "country": [
+                  "NL"
+                ]
+              }
+            },
+            "admin_EU": {
+              "password": "admin",
+              "roles": [
+                "DEMO_USER_EU"
+              ],
+              "attr": {
+                "country": [
+                  "NL",
+                  "DE"
+                ]
+              }
+            }            
+          }
+        }
+      },
+      "EXT_SRV": {
+        "kind": "odata",
+        "model": "srv/external/extsrv",
+        "csrf": true,
+        "csrfInBatch": true,
+        "[production]": {
+          "credentials": {
+            "destination": "name of dest",
+            "path": "/sap/opu/podata4/..."
+          }
+        },
+        "[viewer]": {
+          "credentials": {
+            "destination": "name of dest",
+            "path": "/sap/opu/podata4/..."
+          }
+        }
+      }
+    },
+    "features": {
+      "odata_new_parser": true,
+      "kibana_formatter": true,
+      "in_memory_db": true
+    },
+    "i18n": {
+      "folders": [
+        "_i18n",
+        "srv/_i18n"
+      ]
+    }
+  },
+  "sapux": [
+    "app/ui-incidentsapp"
+  ]
+}
