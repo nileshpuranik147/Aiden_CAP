@@ -17,9 +17,9 @@
     {
       "source": "/odata/(.*)$",
       "target": "/odata/$1",
-      "destination": "srv-api",
-      "authenticationType": "none",
-      "csrfProtection" : false
+      "destination": "incidentService-service",
+      "authenticationType": "xsuaa",
+      "csrfProtection" : true
     },    
     {
       "source": "^(.*)$",

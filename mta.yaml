@@ -23,7 +23,6 @@ modules:
     memory: 512M
   build-parameters:
     builder: npm
-
 - name: incidentService-approuter
   type: approuter.nodejs
   path: approuter
@@ -102,6 +101,7 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+
 resources:
 - name: incidentService-auth
   type: org.cloudfoundry.managed-service
@@ -148,6 +148,7 @@ resources:
     service-plan: lite
   requires:
   - name: srv-api
+
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
